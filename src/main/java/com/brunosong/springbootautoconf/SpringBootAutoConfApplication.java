@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,11 +28,14 @@ public class SpringBootAutoConfApplication {
             servletContext.addServlet("hello", new HttpServlet() {
                         @Override
                         protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+                            String name = req.getParameter("name");
+
                             //웹 응답(response)의 3가지 요소를 갖춘다. (상태코드,헤더,바디)
-                            resp.setStatus(200);
-                            resp.setHeader("Content-Type", "text/plain");
+                            resp.setStatus(HttpStatus.OK.value());
+                            resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
                             PrintWriter writer = resp.getWriter();
-                            writer.println("Hello My name is brunosong");
+                            writer.println("Hello My name is " + name);
                         }
                     }
             ).addMapping("/hello");
