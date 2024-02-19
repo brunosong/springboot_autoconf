@@ -1,0 +1,13 @@
+### Order Controller
+POST http://localhost:8080/order?userName=Brunosong
+Content-Type: application/x-www-form-urlencoded
+
+
+### MeberController
+GET localhost:8080/memberGetId?userName=Brunosong
+
+
+
+
+
+

@@ -1,5 +1,7 @@
 package com.brunosong.springbootautoconf;
 
+import com.brunosong.springbootautoconf.controller.MemberController;
+import com.brunosong.springbootautoconf.controller.OrderController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -22,23 +25,45 @@ public class SpringBootAutoConfApplication {
     public static void main(String[] args) {
 
         TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
+
+        MemberController memberController = new MemberController();
+        OrderController orderController = new OrderController();
+
         WebServer webServer = serverFactory.getWebServer(servletContext -> {
 
-            /* hello 서블릿을 만들어 /hello 요청으로 맵핑을 한다. */
-            servletContext.addServlet("hello", new HttpServlet() {
+            /* 프론트 컨트롤러를 적용해보자 */
+            servletContext.addServlet("frontController", new HttpServlet() {
                         @Override
                         protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-                            String name = req.getParameter("name");
+                            /* 모든 요청을 다 받기 때문에 각각 처리를 해줘야 한다. */
+                            String requestURI = req.getRequestURI();
 
-                            //웹 응답(response)의 3가지 요소를 갖춘다. (상태코드,헤더,바디)
-                            resp.setStatus(HttpStatus.OK.value());
-                            resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-                            PrintWriter writer = resp.getWriter();
-                            writer.println("Hello My name is " + name);
+                            if(requestURI.equals("/memberGetId") && req.getMethod().equals(HttpMethod.GET.name())) {
+                                String userName = req.getParameter("userName");
+                                String id = memberController.getId(userName);
+
+                                resp.setStatus(HttpStatus.OK.value());
+                                resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+                                PrintWriter writer = resp.getWriter();
+                                writer.println(id);
+
+                            } else if(requestURI.equals("/order") && req.getMethod().equals(HttpMethod.POST.name())) {
+
+                                String userName = req.getParameter("userName");
+                                String order = orderController.order(userName);
+
+                                resp.setStatus(HttpStatus.OK.value());
+                                resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+                                PrintWriter writer = resp.getWriter();
+                                writer.println(order);
+
+                            } else {
+                                resp.setStatus(HttpStatus.NOT_FOUND.value());
+                            }
                         }
                     }
-            ).addMapping("/hello");
+            ).addMapping("/*");
         });
 
         webServer.start();
