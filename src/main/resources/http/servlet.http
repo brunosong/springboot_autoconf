@@ -1,9 +1,9 @@
-### Order Controller
+### Order Controller order method
 POST http://localhost:8080/order?userName=Brunosong
 Content-Type: application/x-www-form-urlencoded
 
 
-### MeberController
+### MeberController getId method
 GET localhost:8080/memberGetId?userName=Brunosong
 
 

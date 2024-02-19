@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -19,16 +20,14 @@ import java.io.PrintWriter;
 
 public class SpringBootAutoConfApplication {
 
-    /* servletContext.addServlet : 서블릿을 등록 해준다. web.xml의 <servlet-mapping><servlet-name>hello</..></..>  */
-    /* servletContext.addServlet.addMapping : 서블릿의 호출 경로를 맵핑해준다. web.xml의 <servlet-mapping><url-pattern>/hello</..></..>  */
-
     public static void main(String[] args) {
 
+        GenericApplicationContext applicationContext = new GenericApplicationContext();
+        applicationContext.registerBean( "memberController", MemberController.class );
+        applicationContext.registerBean( "orderController", OrderController.class );
+        applicationContext.refresh();
+
         TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
-
-        MemberController memberController = new MemberController();
-        OrderController orderController = new OrderController();
-
         WebServer webServer = serverFactory.getWebServer(servletContext -> {
 
             /* 프론트 컨트롤러를 적용해보자 */
@@ -41,9 +40,10 @@ public class SpringBootAutoConfApplication {
 
                             if(requestURI.equals("/memberGetId") && req.getMethod().equals(HttpMethod.GET.name())) {
                                 String userName = req.getParameter("userName");
+
+                                MemberController memberController = applicationContext.getBean(MemberController.class);
                                 String id = memberController.getId(userName);
 
-                                resp.setStatus(HttpStatus.OK.value());
                                 resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
                                 PrintWriter writer = resp.getWriter();
                                 writer.println(id);
@@ -51,9 +51,10 @@ public class SpringBootAutoConfApplication {
                             } else if(requestURI.equals("/order") && req.getMethod().equals(HttpMethod.POST.name())) {
 
                                 String userName = req.getParameter("userName");
+                                OrderController orderController = applicationContext.getBean(OrderController.class);
                                 String order = orderController.order(userName);
 
-                                resp.setStatus(HttpStatus.OK.value());
+                                // 톰캣(servlet container)에서 아무것도 없으면 (에러가 없으면) 200으로 자동으로 처리 해준다
                                 resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
                                 PrintWriter writer = resp.getWriter();
                                 writer.println(order);
