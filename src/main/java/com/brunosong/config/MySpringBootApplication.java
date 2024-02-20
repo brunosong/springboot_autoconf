@@ -1,31 +1,19 @@
 package com.brunosong.config;
 
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 
-public class MySpringBootApplication {
-    public static void run(Class<?> applicationContextClass, String[] args){
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext() {
-            @Override
-            protected void onRefresh() {
-                super.onRefresh();
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-                ServletWebServerFactory serverFactory = this.getBean(ServletWebServerFactory.class);
-                DispatcherServlet dispatcherServlet = this.getBean(DispatcherServlet.class);
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE,ElementType.ANNOTATION_TYPE})
+@Configuration
+@ComponentScan
+@EnableMyAutoConfiguration
+public @interface MySpringBootApplication {
 
-                WebServer webServer = serverFactory.getWebServer(servletContext -> {
-                    servletContext.addServlet("dispatcherServlet", dispatcherServlet )
-                            .addMapping("/*");
-                });
-
-                webServer.start();
-            }
-        };
-
-        applicationContext.register(applicationContextClass);
-        applicationContext.refresh();
-    }
 }

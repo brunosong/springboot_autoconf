@@ -1,10 +1,7 @@
-package com.brunosong.springbootautoconf;
-
+package com.brunosong.config;
 
 import com.brunosong.config.autoconfig.DispatcherServletConfig;
 import com.brunosong.config.autoconfig.ServletWebServerConfig;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -13,10 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE,ElementType.ANNOTATION_TYPE})  // TYPE은 클래스, 인터페이스 , Enum 이다.
-@Configuration
-@ComponentScan
+@Target({ElementType.TYPE,ElementType.ANNOTATION_TYPE})
 @Import({DispatcherServletConfig.class, ServletWebServerConfig.class})
-public @interface MySpringBootApplication {
-
+public @interface EnableMyAutoConfiguration {
 }

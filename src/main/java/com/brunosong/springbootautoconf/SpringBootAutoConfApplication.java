@@ -1,12 +1,13 @@
 package com.brunosong.springbootautoconf;
 
-import static com.brunosong.config.MySpringBootApplication.*;
+import com.brunosong.config.MySpringBootApplication;
+import org.springframework.boot.SpringApplication;
 
 @MySpringBootApplication
 public class SpringBootAutoConfApplication {
 
     public static void main(String[] args) {
-        run(SpringBootAutoConfApplication.class, args);
+        SpringApplication.run(SpringBootAutoConfApplication.class, args);
     }
 
 }
