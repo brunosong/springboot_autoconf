@@ -6,23 +6,15 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 
 @Configuration
+@ComponentScan
 public class SpringBootAutoConfApplication {
-
-    @Bean
-    public MemberController memberController(){
-        return new MemberController();
-    }
-
-    @Bean
-    public OrderController orderController(){
-        return new OrderController();
-    }
 
     public static void main(String[] args) {
 
