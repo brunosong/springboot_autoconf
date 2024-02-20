@@ -1,31 +1,22 @@
 package com.brunosong.springbootautoconf;
 
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 
-public class MySpringBootApplication {
-    static void run(Class<?> applicationContextClass, String[] args ){
+import com.brunosong.config.autoconfig.DispatcherServletConfig;
+import com.brunosong.config.autoconfig.ServletWebServerConfig;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
-        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext() {
-            @Override
-            protected void onRefresh() {
-                super.onRefresh();
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-                ServletWebServerFactory serverFactory = this.getBean(ServletWebServerFactory.class);
-                DispatcherServlet dispatcherServlet = this.getBean(DispatcherServlet.class);
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE,ElementType.ANNOTATION_TYPE})  // TYPE은 클래스, 인터페이스 , Enum 이다.
+@Configuration
+@ComponentScan
+@Import({DispatcherServletConfig.class, ServletWebServerConfig.class})
+public @interface MySpringBootApplication {
 
-                WebServer webServer = serverFactory.getWebServer(servletContext -> {
-                    servletContext.addServlet("dispatcherServlet", dispatcherServlet )
-                            .addMapping("/*");
-                });
-
-                webServer.start();
-            }
-        };
-
-        applicationContext.register(applicationContextClass);
-        applicationContext.refresh();
-    }
 }
