@@ -1,9 +1,15 @@
+### MeberController Controller getUserList
+GET localhost:8080/member/getUserList
+Accept: application/json
+
+
 ### Order Controller order method
 POST http://localhost:8080/order?userName=Brunosong
 
 
 ### MeberController getId method
 GET localhost:8080/member/getId?userName=Brunosong
+
 
 
 
