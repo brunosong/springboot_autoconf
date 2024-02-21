@@ -2,17 +2,21 @@ package com.brunosong.springbootautoconf.STUDY;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.Map;
 
 public class ConditionalTest {
 
 
     @Test
-    void condition(){
+    void conditionTest(){
 
         // 스프링 부트에서 제공하는 ApplicationContext 전용 테스트 객체
         // 빈을 가지고 있는지 테스트
@@ -36,12 +40,23 @@ public class ConditionalTest {
 
     }
 
-
     static class StudyBean {}
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.TYPE,ElementType.ANNOTATION_TYPE})
+    @Conditional(BooleanCondition.class)
+    @interface BrunoTrueConditional {}
+
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.TYPE,ElementType.ANNOTATION_TYPE})
+    @Conditional(BooleanCondition.class)
+    @interface BooleanConditional {
+        boolean value();
+    }
 
     @Configuration
-    @Conditional(BrunoTestTrueCondition.class)
+    @BooleanConditional(true)
     static class Config1 {
 
         @Bean
@@ -53,7 +68,7 @@ public class ConditionalTest {
 
 
     @Configuration
-    @Conditional(BrunoTestFalseCondition.class)
+    @BooleanConditional(false)
     static class Config2 {
         @Bean
         StudyBean studyBean(){
@@ -63,22 +78,15 @@ public class ConditionalTest {
     }
 
 
-    static class BrunoTestTrueCondition implements Condition {
+    static class BooleanCondition implements Condition {
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-            return true;
+
+            Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(BooleanConditional.class.getName());
+            Boolean value = (Boolean)annotationAttributes.get("value");
+            return value;
         }
     }
-
-
-    static class BrunoTestFalseCondition implements Condition {
-        @Override
-        public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-            return false;
-        }
-    }
-
-
 
 
 }
