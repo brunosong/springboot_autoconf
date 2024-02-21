@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE,ElementType.ANNOTATION_TYPE})
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ComponentScan
 @EnableMyAutoConfiguration
 public @interface MySpringBootApplication {
