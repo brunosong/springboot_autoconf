@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
 
+import java.util.Map;
+
 @BrunoAutoConfiguration
 public class PropertyPostProcessorConfig {
 
@@ -22,7 +24,12 @@ public class PropertyPostProcessorConfig {
                 BrunoConfigurationProperty annotation = AnnotationUtils.findAnnotation(bean.getClass(), BrunoConfigurationProperty.class);
                 if(annotation == null) return bean;
 
-                return Binder.get(environment).bindOrCreate("", bean.getClass());
+                String prefix = annotation.prefix();
+                //이렇게도 사용가능
+//                Map<String, Object> annotationAttributes = AnnotationUtils.getAnnotationAttributes(annotation);
+//                String prefix = (String)annotationAttributes.get("prefix");
+
+                return Binder.get(environment).bindOrCreate(prefix, bean.getClass());
 
             }
         };

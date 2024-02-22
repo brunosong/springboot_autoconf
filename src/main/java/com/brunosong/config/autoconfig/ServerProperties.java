@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /* @Component를 달고 있는 클래스들은 두가지 방식에 의해서 스프링에 빈으로 등록될 수 있다. @ComponentScan , @Import */
 
-@BrunoConfigurationProperty
+@BrunoConfigurationProperty(prefix = "brunoserver")
 public class ServerProperties {
 
     private String contextPath;
