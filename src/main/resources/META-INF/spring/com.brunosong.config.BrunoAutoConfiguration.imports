@@ -1,3 +1,4 @@
 com.brunosong.config.autoconfig.DispatcherServletConfig
 com.brunosong.config.autoconfig.TomcatWebServerConfig
 com.brunosong.config.autoconfig.JettyWebServerConfig
+com.brunosong.config.autoconfig.PropertyPlaceholderConfig
