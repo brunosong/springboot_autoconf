@@ -2,12 +2,14 @@ package com.brunosong.springbootautoconf.datasource;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@BrunoTest
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class DataSourceTest {
 
     /* application.properties 는 스프링프레임워크의 기본 동작 방식은 아니고 스프링 부트에서 지원을 해주는 동작이다. */

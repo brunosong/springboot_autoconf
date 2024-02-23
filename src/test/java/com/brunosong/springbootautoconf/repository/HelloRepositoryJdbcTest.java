@@ -1,13 +1,15 @@
 package com.brunosong.springbootautoconf.repository;
 
-import com.brunosong.springbootautoconf.datasource.BrunoTest;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
-@BrunoTest
+/* 리포지토리를 사용하는데 웹쪽은 사용하지 않겠다. */
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Transactional
 class HelloRepositoryJdbcTest {
 
     @Autowired

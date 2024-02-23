@@ -1,12 +1,12 @@
 package com.brunosong.springbootautoconf.datasource;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-@BrunoTest
+@JdbcTest
 public class JdbcTemplateTest {
 
     @Autowired
