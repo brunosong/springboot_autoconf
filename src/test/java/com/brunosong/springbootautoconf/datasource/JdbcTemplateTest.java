@@ -12,16 +12,12 @@ public class JdbcTemplateTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @BeforeEach
-    void setup() {
-        jdbcTemplate.execute("create table IF NOT EXISTS bruno ( id int , username  varchar )");
-    }
 
     @Test
     void test(){
 
-        jdbcTemplate.update("insert into bruno values (1, 'KIM')");
-        jdbcTemplate.update("insert into bruno values (2, 'SONG')");
+        jdbcTemplate.update("insert into bruno values ('KIM',  1)");
+        jdbcTemplate.update("insert into bruno values ('SONG', 2)");
 
         Long count = jdbcTemplate.queryForObject("select count(*) from bruno", Long.class);
         Assertions.assertThat(count).isEqualTo(2L);
