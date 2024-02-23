@@ -1,5 +1,6 @@
 package com.brunosong.config;
 
+import com.brunosong.datasource.BrunoDataSourceAutoConfiguration;
 import org.springframework.boot.context.annotation.ImportCandidates;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
@@ -22,6 +23,7 @@ public class BrunoImportSelector implements ImportSelector {
         * */
         List<String> list = new ArrayList<>();
         ImportCandidates.load(BrunoAutoConfiguration.class, classloader).forEach(list::add);
+        ImportCandidates.load(BrunoDataSourceAutoConfiguration.class, classloader).forEach(list::add);
 
         return list.toArray(new String[0]);
     }
